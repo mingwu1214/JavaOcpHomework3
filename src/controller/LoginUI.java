@@ -1,6 +1,9 @@
 package controller;
 
 import java.awt.EventQueue;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,16 +26,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class LoginUI extends JFrame {
+public class LoginUI extends JFrame  {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField username;
 	private JTextField password;
+	JLabel timeLabel;
 
 	/**
-	 * Launch the application.
+	 * Launch the application.;
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -47,10 +53,18 @@ public class LoginUI extends JFrame {
 		});
 	}
 
+	
+
 	/**
 	 * Create the frame.
 	 */
 	public LoginUI() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				new Thread(new clock()).start();
+			}
+		});
 		setTitle("Member Management System - Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -146,5 +160,45 @@ public class LoginUI extends JFrame {
 		btnNewButton.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
 		btnNewButton.setBounds(10, 136, 96, 35);
 		panel.add(btnNewButton);
+		
+		//JLabel timeLabel = new JLabel("00:00:00");
+		timeLabel = new JLabel("00:00:00");
+		timeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		timeLabel.setBounds(279, 202, 127, 25);
+		panel.add(timeLabel);
+	
+	}
+	//
+	private static String format(int n)
+	{
+		return n<10? "0"+n:""+n;
+	}
+	private static String getTime()
+
+	{
+		Calendar calendar=new GregorianCalendar();
+		int H=calendar.get(Calendar.HOUR_OF_DAY);
+		int M=calendar.get(calendar.MINUTE);
+		int S=calendar.get(calendar.SECOND);
+		
+		return format(H)+":"+format(M)+":"+format(S);
+	}
+	private class clock implements Runnable
+	{
+		public void run()
+		{
+			while(true)
+			{
+				timeLabel.setText(getTime());
+				
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						
+						e.printStackTrace();
+					}
+				
+			}
+		}
 	}
 }
