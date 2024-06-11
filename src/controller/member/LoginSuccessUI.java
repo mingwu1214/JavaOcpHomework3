@@ -59,7 +59,7 @@ public class LoginSuccessUI extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Member Management");
+		JButton btnNewButton = new JButton("Shopping Mall");
 		btnNewButton.setFont(new Font("新細明體", Font.PLAIN, 20));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override

@@ -6,8 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import dao.impl.ProductDaoImpl;
 import model.Member;
 import model.Porder;
+import model.Product;
 import util.cal;
 
 import javax.swing.JLabel;
@@ -16,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class PorderUI extends JFrame {
 
@@ -69,20 +72,20 @@ public class PorderUI extends JFrame {
 		lblNewLabel_1.setBounds(25, 67, 152, 31);
 		panel.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("A");
-		lblNewLabel_1_1.setFont(new Font("新細明體", Font.BOLD, 20));
-		lblNewLabel_1_1.setBounds(25, 120, 152, 31);
-		panel.add(lblNewLabel_1_1);
+		JLabel labelA = new JLabel("A");
+		labelA.setFont(new Font("新細明體", Font.BOLD, 20));
+		labelA.setBounds(25, 120, 152, 31);
+		panel.add(labelA);
 		
-		JLabel lblNewLabel_1_2 = new JLabel("B");
-		lblNewLabel_1_2.setFont(new Font("新細明體", Font.BOLD, 20));
-		lblNewLabel_1_2.setBounds(25, 161, 152, 31);
-		panel.add(lblNewLabel_1_2);
+		JLabel labelB = new JLabel("B");
+		labelB.setFont(new Font("新細明體", Font.BOLD, 20));
+		labelB.setBounds(25, 161, 152, 31);
+		panel.add(labelB);
 		
-		JLabel lblNewLabel_1_3 = new JLabel("C");
-		lblNewLabel_1_3.setFont(new Font("新細明體", Font.BOLD, 20));
-		lblNewLabel_1_3.setBounds(25, 202, 152, 31);
-		panel.add(lblNewLabel_1_3);
+		JLabel labelC = new JLabel("C");
+		labelC.setFont(new Font("新細明體", Font.BOLD, 20));
+		labelC.setBounds(25, 202, 152, 31);
+		panel.add(labelC);
 		
 		a = new JTextField();
 		a.setFont(new Font("新細明體", Font.BOLD, 20));
@@ -108,6 +111,12 @@ public class PorderUI extends JFrame {
 		panel.add(showName);
 		
 		/**/
+		List<Product> l = new ProductDaoImpl().selectAll();
+		Product[] product=l.toArray(new Product[l.size()]);
+		labelA.setText(product[0].getName());
+		labelB.setText(product[1].getName());
+		labelC.setText(product[2].getName());
+		
 		Member m=(Member)(cal.readFile("member.txt"));
 		
 		showName.setText(m.getName());
@@ -122,6 +131,8 @@ public class PorderUI extends JFrame {
 				 * 3.saveFile(名,p);
 				 * 4.切換到confirm
 				 */
+
+				
 				int A=Integer.parseInt(a.getText());
 				int B=Integer.parseInt(b.getText());
 				int C=Integer.parseInt(c.getText());

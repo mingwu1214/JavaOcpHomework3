@@ -8,7 +8,9 @@ import javax.swing.border.EmptyBorder;
 
 import controller.member.LoginErrorUI;
 import dao.impl.PorderDaoImpl;
+import dao.impl.ProductDaoImpl;
 import model.Porder;
+import model.Product;
 import util.cal;
 
 import javax.swing.JLabel;
@@ -18,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class ConfirmUI extends JFrame {
 
@@ -76,17 +79,20 @@ public class ConfirmUI extends JFrame {
 		panel.add(output);
 
 		/**/
+		List<Product> l = new ProductDaoImpl().selectAll();
+		Product[] product=l.toArray(new Product[l.size()]);
+		
 		Porder p=(Porder)(cal.readFile("porder.txt"));
 		
 		custom.setText(p.getName());
 		
 		show.setText("Following is your shopping list");
 		
-		int sum=p.getA()*30+p.getB()*40+p.getC()*50;
+		int sum=p.getA()*product[0].getPrice()+p.getB()*product[1].getPrice()+p.getC()*product[2].getPrice();
 		
-		String outputDetail="A:" + p.getA() +
-				"\nB:" + p.getB() +
-				"\nC:" + p.getC() +
+		String outputDetail="" + product[0].getName() +":" + p.getA() +
+				"\n" + product[1].getName() +":" + p.getB() +
+				"\n" + product[2].getName() +":" + p.getC() +
 				"\nTotal:" + sum + " NTD";
 		output.setText(outputDetail);
 		

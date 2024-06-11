@@ -7,8 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dao.impl.PorderDaoImpl;
+import dao.impl.ProductDaoImpl;
 import model.Member;
 import model.Porder;
+import model.Product;
 import util.cal;
 
 import javax.swing.JLabel;
@@ -16,6 +18,10 @@ import java.awt.Font;
 import java.util.List;
 
 import javax.swing.JTextArea;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
 
 public class FinishUI extends JFrame {
 
@@ -44,7 +50,7 @@ public class FinishUI extends JFrame {
 	public FinishUI() {
 		setTitle("Finish UI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 724, 476);
+		setBounds(100, 100, 724, 566);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -77,17 +83,37 @@ public class FinishUI extends JFrame {
 		List<Porder> l = new PorderDaoImpl().selectAll();
 		Porder[] p=l.toArray(new Porder[l.size()]);
 		int n=p.length -1;
+	
+		List<Product> ll = new ProductDaoImpl().selectAll();
+		Product[] product=ll.toArray(new Product[l.size()]);
 		
-		int sum=p[n].getA()*30+p[n].getB()*40+p[n].getC()*50;
+		int sum=p[n].getA()*product[0].getPrice()+p[n].getB()*product[1].getPrice()+p[n].getC()*product[2].getPrice();
 		
-		String outputDetail="訂單號碼:"+p[n].getId()+
-				"\n客戶:"+p[n].getName()+"\t地址:"+m.getAddress()+"\t電話:"+m.getPhone()+
-				"\nA:"+p[n].getA()+
-				"\nB:"+p[n].getB()+
-				"\nC:"+p[n].getC()+
-				"\n=================================="+
-				"\n小計:"+sum+"元";		
+		
+		String outputDetail="Order No:"+p[n].getId()+
+				"\nCustomer:"+p[n].getName()+"\tAddress:"+m.getAddress()+"\tPhone:"+m.getPhone()+
+				"\n========================================================================="+
+				"\n" + product[0].getName() +":"+p[n].getA()+
+				"\n" + product[1].getName() +":"+p[n].getB()+
+				"\n" + product[2].getName() +":"+p[n].getC()+
+				"\n========================================================================="+
+				"\nTotal:"+sum+" NTD";		
 		output.setText(outputDetail);		
+		
+		JButton btnNewButton = new JButton("Print");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					output.print();
+				} catch (PrinterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnNewButton.setBounds(205, 475, 155, 23);
+		contentPane.add(btnNewButton);
 	}
-
 }
